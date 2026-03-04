@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -32,7 +33,7 @@ export const extractUrn = (manifestId) => {
   return withoutLeadingSlash.split(':MANIFEST')[0];
 };
 
-const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, containerId }) => {
+const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, containerId, classes }) => {
   const [pages, setPages] = useState('');
   const [error, setError] = useState('');
 
@@ -116,7 +117,9 @@ const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, c
       fullWidth
       maxWidth="sm"
     >
-      <DialogTitle>PDF Download</DialogTitle>
+        <DialogTitle disableTypography className={classes.h2}>
+          <Typography variant="h2">PDF Download</Typography>
+        </DialogTitle>
       <DialogContent>
         <Typography variant="body1" gutterBottom>
           {`The document contains ${totalPages} pages and has an estimated file size of ${(totalPages * 0.7862).toFixed(2)} MB. All pages will be included by default. If you wish to download certain portions of it, you may provide a comma separated list of pages and/or ranges.`}
@@ -126,6 +129,7 @@ const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, c
           label="Pages"
           value={pages}
           onChange={(e) => setPages(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleDownload(); }}
           error={Boolean(error)}
           helperText={error || `Enter a page number or range (e.g. 5 or 5-10). Max: ${totalPages}`}
           fullWidth
@@ -150,11 +154,17 @@ MiradorPdfDialog.defaultProps = {
   containerId: null,
 };
 
+const styles = () => ({
+  h2: {
+    paddingBottom: 0,
+  },
+});
+
 export default {
   target: 'Window',
   mode: 'add',
   name: 'MiradorPdfDialog',
-  component: MiradorPdfDialog,
+  component: withStyles(styles)(MiradorPdfDialog),
   mapStateToProps,
   mapDispatchToProps,
 };
