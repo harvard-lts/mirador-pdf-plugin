@@ -1,9 +1,12 @@
-import miradorPdfPlugin from './plugins/MiradorPdfPlugin';
+import miradorPdfMenuItem from './plugins/MiradorPdfMenuItem';
+import miradorPdfDialog from './plugins/MiradorPdfDialog';
 
 export {
-  miradorPdfPlugin,
+  miradorPdfMenuItem,
+  miradorPdfDialog,
 };
 
 export default [
-  miradorPdfPlugin,
+  miradorPdfMenuItem,
+  miradorPdfDialog,
 ];
