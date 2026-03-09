@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
     id: "mirador",
     windows: [
       {
-        manifestId: "https://nrs-dev.lib.harvard.edu/URN-3:RAD.SCHL:101118966:MANIFEST:3"
+        manifestId: "https://nrs.lib.harvard.edu/URN-3:FHCL.LOEB:25853480:MANIFEST:3"
       }
     ],
     miradorPdfPlugin: {
-      pdfAPI:'http://mps-dev.lib.harvard.edu/pdf/download/',
+      pdfAPI:'http://mps.lib.harvard.edu/pdf/download/',
     },
   };
 

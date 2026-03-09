@@ -6,9 +6,9 @@ import miradorPdfDialog, { extractUrn } from '../plugins/MiradorPdfDialog';
 const MiradorPdfMenuItem = miradorPdfMenuItem.component;
 const MiradorPdfDialog = miradorPdfDialog.component;
 
-const MANIFEST_ID = 'https://nrs-dev.lib.harvard.edu/URN-3:RAD.SCHL:101118966:MANIFEST:3';
-const PDF_API = 'http://mps-dev.lib.harvard.edu/pdf/download/';
-const EXPECTED_URN = 'URN-3:RAD.SCHL:101118966';
+const MANIFEST_ID = 'https://nrs.lib.harvard.edu/URN-3:FHCL.LOEB:25853480:MANIFEST:3';
+const PDF_API = 'http://mps.lib.harvard.edu/pdf/download/';
+const EXPECTED_URN = 'URN-3:FHCL.LOEB:25853480';
 
 // ---------------------------------------------------------------------------
 // Shared setup
