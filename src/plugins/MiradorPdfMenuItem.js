@@ -1,6 +1,9 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
+import PDFIcon from "@material-ui/icons/PictureAsPdf";
 
 const dialogReducer = (state = {}, action) => {
   if (action.type === 'OPEN_WINDOW_DIALOG') {
@@ -43,9 +46,16 @@ const MiradorPdfMenuItem = ({ handleClose, openDialog }) => {
   };
 
   return (
-    <MenuItem onClick={handleClick}>
-      Download PDF
-    </MenuItem>
+    <div>
+      <MenuItem onClick={handleClick}>
+        <ListItemIcon>
+          <PDFIcon />
+        </ListItemIcon>
+        <ListItemText primaryTypographyProps={{ variant: "body1" }}>      
+          Download PDF
+        </ListItemText>  
+      </MenuItem>
+    </div>
   );
 };
 
