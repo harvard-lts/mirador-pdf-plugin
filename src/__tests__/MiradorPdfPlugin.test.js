@@ -3,6 +3,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import miradorPdfMenuItem from '../plugins/MiradorPdfMenuItem';
 import miradorPdfDialog, { extractUrn } from '../plugins/MiradorPdfDialog';
 
+vi.mock('mirador', () => ({
+  getManifestoInstance: vi.fn(),
+}));
+
 const MiradorPdfMenuItem = miradorPdfMenuItem.component;
 const MiradorPdfDialog = miradorPdfDialog.component;
 
