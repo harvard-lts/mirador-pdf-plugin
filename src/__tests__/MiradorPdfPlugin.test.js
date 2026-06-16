@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import miradorPdfMenuItem from '../plugins/MiradorPdfMenuItem';
-import miradorPdfDialog, { extractUrn } from '../plugins/MiradorPdfDialog';
+import miradorPdfDialog, { extractUrn, validatePages } from '../plugins/MiradorPdfDialog';
 
 const MiradorPdfMenuItem = miradorPdfMenuItem.component;
 const MiradorPdfDialog = miradorPdfDialog.component;
@@ -117,6 +117,7 @@ const dialogDefaultProps = {
   manifestId: MANIFEST_ID,
   totalPages: 100,
   pdfAPI: PDF_API,
+  maxPages: 500,
   containerId: null,
   closeDialog: vi.fn(),
 };
@@ -223,6 +224,81 @@ describe('MiradorPdfDialog > validation', () => {
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'bad' } });
     fireEvent.click(screen.getByRole('button', { name: 'Download' }));
     expect(window.open).not.toHaveBeenCalled();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// validatePages helper — pure max-pages logic
+// ---------------------------------------------------------------------------
+
+describe('validatePages', () => {
+  it('accepts empty input when the whole document fits the limit', () => {
+    expect(validatePages('', 100, 500)).toEqual({ valid: true, message: '' });
+  });
+
+  it('rejects empty input (all pages) when the document exceeds the limit', () => {
+    const result = validatePages('', 600, 500);
+    expect(result.valid).toBe(false);
+    expect(result.message).toMatch(/exceeds the 500-page limit/);
+  });
+
+  it('accepts a range at exactly the limit', () => {
+    expect(validatePages('1-500', 1000, 500).valid).toBe(true);
+  });
+
+  it('rejects a range that exceeds the limit', () => {
+    const result = validatePages('1-501', 1000, 500);
+    expect(result.valid).toBe(false);
+    expect(result.message).toMatch(/at most 500 pages/);
+  });
+
+  it('accepts a single page regardless of the limit', () => {
+    expect(validatePages('5', 1000, 1).valid).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// MiradorPdfDialog — max pages per request (UI)
+// ---------------------------------------------------------------------------
+
+describe('MiradorPdfDialog > max pages', () => {
+  it('shows an error and disables Download for a range over the limit', () => {
+    renderDialog({ totalPages: 1000, maxPages: 10 });
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: '1-20' } });
+    expect(screen.getByText(/at most 10 pages/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Download' })).toBeDisabled();
+  });
+
+  it('does not call window.open for an over-limit range', () => {
+    renderDialog({ totalPages: 1000, maxPages: 10 });
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: '1-20' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Download' }));
+    expect(window.open).not.toHaveBeenCalled();
+  });
+
+  it('disables Download for the all-pages default when the document is too large', () => {
+    renderDialog({ totalPages: 1000, maxPages: 500 });
+    // Empty input means "all pages" — 1000 > 500 so it must be disabled.
+    expect(screen.getByRole('textbox').value).toBe('');
+    expect(screen.getByRole('button', { name: 'Download' })).toBeDisabled();
+    expect(screen.getByText(/exceeds the 500-page limit/)).toBeInTheDocument();
+  });
+
+  it('enables Download once a valid range within the limit is entered', () => {
+    renderDialog({ totalPages: 1000, maxPages: 10 });
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: '1-10' } });
+    const button = screen.getByRole('button', { name: 'Download' });
+    expect(button).not.toBeDisabled();
+    fireEvent.click(button);
+    expect(window.open).toHaveBeenCalledWith(
+      `${PDF_API.replace(/\/$/, '')}/${EXPECTED_URN}?start=1&end=10`,
+      '_blank'
+    );
+  });
+
+  it('shows the page-limit guidance in the helper text', () => {
+    renderDialog({ totalPages: 50, maxPages: 500 });
+    expect(screen.getByText(/up to 500 pages per request/)).toBeInTheDocument();
   });
 });
 
