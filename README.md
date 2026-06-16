@@ -57,6 +57,7 @@ Mirador.viewer(
     ],
     miradorPdfPlugin: {
       pdfAPI: 'https://your-pdf-service.example.com/pdf/download/',
+      maxPages: 500,
     },
   },
   [...Plugin]
@@ -65,9 +66,10 @@ Mirador.viewer(
 
 ### Config options
 
-| Option   | Type   | Description                                      |
-| -------- | ------ | ------------------------------------------------ |
-| `pdfAPI` | String | Base URL of the PDF download service (required). |
+| Option     | Type   | Description                                                                                                                                              |
+| ---------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pdfAPI`   | String | Base URL of the PDF download service (required).                                                                                                         |
+| `maxPages` | Number | Maximum pages allowed in a single request (default: 500). Keep this in sync with the service's `MAX_PAGES_PER_REQUEST` env var so client/server agree. |
 
 ### URL construction
 

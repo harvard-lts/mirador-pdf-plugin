@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ],
     miradorPdfPlugin: {
       pdfAPI:'http://mps.lib.harvard.edu/pdf/download/',
+      maxPages: 200,
     },
   };
 
