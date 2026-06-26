@@ -1,6 +1,6 @@
 {
   "name": "@harvard-lts/mirador-pdf-plugin",
-  "version": "0.0.5",
+  "version": "2.0.0",
   "description": "A Mirador 4 plugin that interacts with MPS PDF Download Service ",
   "module": "dist/es/index.js",
   "files": [
