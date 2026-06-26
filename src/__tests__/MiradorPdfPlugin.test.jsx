@@ -1,7 +1,16 @@
-import React from 'react';
+import {
+  describe, it, expect, vi, beforeEach, afterEach,
+} from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import miradorPdfMenuItem from '../plugins/MiradorPdfMenuItem';
-import miradorPdfDialog, { extractUrn, validatePages } from '../plugins/MiradorPdfDialog';
+
+// Mock `mirador` so importing the plugins doesn't load the full Mirador bundle
+// (which triggers a jsdom HTMLCanvasElement.prototype.getContext error).
+vi.mock('mirador', () => ({
+  getManifestoInstance: vi.fn(),
+}));
+
+import miradorPdfMenuItem from '../plugins/MiradorPdfMenuItem.jsx';
+import miradorPdfDialog, { extractUrn, validatePages } from '../plugins/MiradorPdfDialog.jsx';
 
 const MiradorPdfMenuItem = miradorPdfMenuItem.component;
 const MiradorPdfDialog = miradorPdfDialog.component;
@@ -373,4 +382,3 @@ describe('MiradorPdfDialog > plugin export', () => {
     expect(typeof miradorPdfDialog.mapDispatchToProps).toBe('function');
   });
 });
-

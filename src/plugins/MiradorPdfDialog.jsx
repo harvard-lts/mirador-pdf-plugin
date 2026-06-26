@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
+import { useState, useEffect, useMemo } from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { getManifestoInstance } from 'mirador';
 
 const mapStateToProps = (state, { windowId }) => {
   const manifest = getManifestoInstance(state, { windowId });
@@ -82,7 +81,15 @@ export const validatePages = (pages, totalPages, maxPages) => {
   return { valid: false, message: 'Please enter a page number or range (e.g. 5 or 5-10).' };
 };
 
-const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, maxPages, containerId, classes }) => {
+const MiradorPdfDialog = ({
+  open = false,
+  closeDialog,
+  manifestId,
+  totalPages,
+  pdfAPI,
+  maxPages = 500,
+  containerId = null,
+}) => {
   const [pages, setPages] = useState('');
 
   // Reset form state whenever the dialog is closed
@@ -134,9 +141,9 @@ const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, m
       fullWidth
       maxWidth="sm"
     >
-        <DialogTitle disableTypography className={classes.h2}>
-          <Typography variant="h2">PDF Download</Typography>
-        </DialogTitle>
+      <DialogTitle variant="h2" sx={{ paddingBottom: 0 }}>
+        PDF Download
+      </DialogTitle>
       <DialogContent>
         <Typography variant="body1" gutterBottom>
           {`The document contains ${totalPages} pages and has an estimated file size of ${(totalPages * 0.7862).toFixed(2)} MB. All pages will be included by default. If you wish to download certain portions of it, you may provide a single page (e.g. 5) or a range (e.g. 5-10).`}
@@ -160,7 +167,7 @@ const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, m
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="default">
+        <Button onClick={handleClose} color="inherit">
           Close
         </Button>
         <Button onClick={handleDownload} color="primary" variant="contained" disabled={!validity.valid}>
@@ -171,23 +178,11 @@ const MiradorPdfDialog = ({ open, closeDialog, manifestId, totalPages, pdfAPI, m
   );
 };
 
-MiradorPdfDialog.defaultProps = {
-  open: false,
-  maxPages: 500,
-  containerId: null,
-};
-
-const styles = () => ({
-  h2: {
-    paddingBottom: 0,
-  },
-});
-
 export default {
   target: 'Window',
   mode: 'add',
   name: 'MiradorPdfDialog',
-  component: withStyles(styles)(MiradorPdfDialog),
+  component: MiradorPdfDialog,
   mapStateToProps,
   mapDispatchToProps,
 };
