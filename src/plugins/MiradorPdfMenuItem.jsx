@@ -1,9 +1,8 @@
-import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { getManifestoInstance } from 'mirador/dist/es/src/state/selectors/manifests';
-import PDFIcon from "@material-ui/icons/PictureAsPdf";
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import PDFIcon from '@mui/icons-material/PictureAsPdf';
+import { getManifestoInstance } from 'mirador';
 
 const dialogReducer = (state = {}, action) => {
   if (action.type === 'OPEN_WINDOW_DIALOG') {
@@ -39,7 +38,7 @@ const mapDispatchToProps = (dispatch, { windowId }) => ({
     dispatch({ type: 'OPEN_WINDOW_DIALOG', windowId, dialogType: 'PDF_DOWNLOAD' }),
 });
 
-const MiradorPdfMenuItem = ({ handleClose, openDialog }) => {
+const MiradorPdfMenuItem = ({ handleClose = () => {}, openDialog = () => {} }) => {
   const handleClick = () => {
     openDialog();
     handleClose();
@@ -51,17 +50,12 @@ const MiradorPdfMenuItem = ({ handleClose, openDialog }) => {
         <ListItemIcon>
           <PDFIcon />
         </ListItemIcon>
-        <ListItemText primaryTypographyProps={{ variant: "body1" }}>      
+        <ListItemText primaryTypographyProps={{ variant: 'body1' }}>
           Download PDF
-        </ListItemText>  
+        </ListItemText>
       </MenuItem>
     </div>
   );
-};
-
-MiradorPdfMenuItem.defaultProps = {
-  handleClose: () => {},
-  openDialog: () => {},
 };
 
 export default {

@@ -1,6 +1,22 @@
 # mirador-pdf-plugin
 
-A [Mirador 3](https://projectmirador.org/) plugin that adds a **Download PDF** option to the window top-bar menu. It connects to an external PDF download service and allows users to optionally specify a page number or range before downloading.
+[![Node Unit Tests](https://github.com/harvard-lts/mirador-pdf-plugin/actions/workflows/coverage-node.yml/badge.svg)](https://github.com/harvard-lts/mirador-pdf-plugin/actions/workflows/coverage-node.yml)
+
+<a href="https://github.com/harvard-lts/mirador-pdf-plugin/actions/workflows/coverage-node.yml"><img src="https://github.com/harvard-lts/mirador-pdf-plugin/raw/badges/test-coverage/coverage.svg"></a>
+
+A [Mirador 4](https://projectmirador.org/) plugin that adds a **Download PDF** option to the window top-bar menu. It connects to an external PDF download service and allows users to optionally specify a page number or range before downloading.
+
+## Compatibility
+
+This plugin is **Mirador 4-compatible** (React 18/19, MUI 7). It is **not**
+backwards compatible with Mirador 3 — the upgrade contains breaking changes
+(top-level `mirador` imports, function/hook components, MUI 7 + Emotion styling).
+
+Versioning convention:
+
+- **Mirador 4** releases are tagged `2.x`.
+- **Mirador 3** releases are tagged `0.x` or `1.x` — pin one of these if you
+  still need Mirador 3.
 
 ## Features
 
@@ -13,7 +29,7 @@ A [Mirador 3](https://projectmirador.org/) plugin that adds a **Download PDF** o
 ## Requirements
 
 - [NVM](https://github.com/nvm-sh/nvm)
-- Mirador 3
+- Mirador 4
 
 ## Setup
 
@@ -33,7 +49,7 @@ The following are some useful scripts that can be run using `npm run <script>`. 
 
 ## Installing in Mirador
 
-The `mirador-pdf-plugin` requires an instance of Mirador 3. Visit the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) to learn how to [install an existing plugin](https://github.com/ProjectMirador/mirador/wiki/Mirador-3-plugins#installing-an-existing-plugin) and for additional information about plugins.
+The `mirador-pdf-plugin` requires an instance of Mirador 4. Visit the [Mirador wiki](https://github.com/ProjectMirador/mirador/wiki) and the [Creating a Mirador 4 Plugin](https://github.com/ProjectMirador/mirador/wiki/Creating-a-Mirador-4-Plugin) page for information about installing and building plugins.
 
 Install the package:
 
@@ -46,7 +62,7 @@ npm i @harvard-lts/mirador-pdf-plugin
 Pass a `miradorPdfPlugin` object in your Mirador config block:
 
 ```js
-import Mirador from 'mirador/dist/es/src/index';
+import Mirador from 'mirador';
 import Plugin from '@harvard-lts/mirador-pdf-plugin';
 
 Mirador.viewer(

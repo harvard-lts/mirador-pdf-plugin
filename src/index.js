@@ -1,5 +1,5 @@
-import miradorPdfMenuItem from './plugins/MiradorPdfMenuItem';
-import miradorPdfDialog from './plugins/MiradorPdfDialog';
+import miradorPdfMenuItem from './plugins/MiradorPdfMenuItem.jsx';
+import miradorPdfDialog from './plugins/MiradorPdfDialog.jsx';
 
 export {
   miradorPdfMenuItem,
